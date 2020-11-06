@@ -15,11 +15,18 @@
 <script>
 import UserList from '@/components/layouts/UserList.vue';
 import ChatArea from '@/components/layouts/ChatArea.vue';
+import { onMounted } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
   components: {
     UserList,
     ChatArea,
+  },
+  setup() {
+    const { dispatch } = useStore();
+
+    onMounted(() => dispatch('realTimeMessage'));
   },
 };
 </script>

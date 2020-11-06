@@ -1,62 +1,65 @@
+/* eslint-disable no-shadow */
 import { createStore } from 'vuex';
-import { fireStore } from '@/firebase/firebaseSDK';
+import { firestore } from '@/firebase/firebaseSDK';
+import Auth from '@/store/auth';
 
 const modules = {
-
+  auth: Auth,
 };
 
 const state = {
-
+  messages: [],
+  currentUsers: [],
 };
 
 const actions = {
-  sendMessage(context, message) {
-    console.log(message);
-    const docRef = fireStore.collection('Q1').doc('LA');
-    // const data = {
-    //   name: 'Liu',
-    //   age: 23,
-    //   job: 'cooker',
-    // };
-
-    class City {
-      constructor() {
-        this.name = 'Taipei';
-        this.population = 1000;
-      }
-
-      doublePopulation() {
-        return this.population * 2;
-      }
-    }
-
-    const cityConverter = {
-      toFirestore(city) {
-        return {
-          name: city.name,
-          state: city.state,
-          country: city.country,
-        };
-      },
-      fromFirestore(snapshot, options) {
-        const data = snapshot.data(options);
-        return new City(data.name, data.state, data.country);
-      },
+  sendMessage(context, { message }) {
+    const data = {
+      message,
+      ts: new Date().getTime(),
+      type: 'msg',
+      uid: '',
     };
-
-    docRef
-      .withConverter(cityConverter)
-      .set(new City())
-      .catch((err) => console.log(err));
+    return firestore.collection('messages').add(data)
+      .then(() => true)
+      .catch((err) => err);
+  },
+  sendFile() {
+  },
+  realTimeMessage({ state, commit }) {
+    const msgRef = firestore.collection('messages').orderBy('ts');
+    const data = [];
+    msgRef.onSnapshot((snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (state.messages.length === 0) {
+          data.push(change.doc.data());
+        }
+        if (change.type === 'added') {
+          commit('ADD_NEW_MSG', change.doc.data());
+        }
+        if (change.type === 'removed') {
+          commit('DELETE_MAG', change.doc.data());
+        }
+      });
+    });
+  },
+  realTimeUser() {
   },
 };
 
 const mutations = {
-
+  SET_MSG(state, data) {
+    state.messages = data;
+  },
+  ADD_NEW_MSG(state, message) {
+    state.messages.push(message);
+  },
 };
 
 const getters = {
-
+  messages(state) {
+    return state.messages;
+  },
 };
 
 export default createStore({
