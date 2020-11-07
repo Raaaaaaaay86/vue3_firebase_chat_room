@@ -9,6 +9,7 @@
         class="resize-none px-4 py-2 h-full w-full rounded-md text-green-900 shadow-md outline-none"
         placeholder="Say Something...."
       />
+      <input ref="fileInput" type="file" accept="image/*" @change="uploadFile" hidden>
     </form>
     <div class="flex-grow flex justify-evenly">
       <div
@@ -17,7 +18,10 @@
       >
         <i class="fas fa-1x fa-paper-plane mr-1"></i>
       </div>
-      <div class="w-16 h-16 border-2 border-green-200 flex justify-center items-center rounded-full hover:bg-green-800 shadow-2xl hover:shadow-md">
+      <div
+        class="w-16 h-16 border-2 border-green-200 flex justify-center items-center rounded-full hover:bg-green-800 shadow-2xl hover:shadow-md"
+        @click.prevent="$refs.fileInput.click()"
+      >
         <i class="fas fa-1x fa-file-upload" />
       </div>
     </div>
@@ -26,23 +30,36 @@
 
 <script>
 import { useStore } from 'vuex';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 export default {
   setup() {
-    const { dispatch } = useStore();
+    const { dispatch, getters } = useStore();
     const text = ref('');
+    const loginUser = computed(() => getters['auth/loginUser']);
+
     const sendMessage = () => {
       const data = {
         message: text.value,
+        user: {
+          uid: loginUser.value.uid,
+          name: loginUser.value.nickName,
+        },
       };
       dispatch('sendMessage', data);
       text.value = '';
     };
 
+    const uploadFile = (e) => {
+      dispatch('sendFile', { e, loginUser: loginUser.value })
+        .catch((err) => alert(err));
+    };
+
     return {
       text,
       sendMessage,
+      uploadFile,
+      loginUser,
     };
   },
 };

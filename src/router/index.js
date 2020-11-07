@@ -9,6 +9,7 @@ const routes = [
   {
     path: '/room',
     name: 'Room',
+    meta: { requireAuth: true },
     component: () => import('@/views/Room.vue'),
   },
 ];

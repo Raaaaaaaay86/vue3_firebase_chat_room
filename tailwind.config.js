@@ -11,7 +11,17 @@ module.exports = {
         100: '25rem',
         '8/10': '80%',
       },
+      minWidth: {
+        16: '4rem',
+        75: '19rem',
+        100: '25rem',
+        '8/10': '80%',
+      },
       height: {
+        75: '19rem',
+      },
+      minHeight: {
+        16: '4rem',
         75: '19rem',
       },
       gridTemplateRows: {

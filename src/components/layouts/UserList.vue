@@ -4,14 +4,16 @@
       <h5 class="text-2xl font-extrabold">
         Online Users
       </h5>
-      <i class="fas fa-2x fa-sign-out-alt" />
+      <div @click.prevent="signOut" class="cursor-pointer">
+        <i class="fas fa-2x fa-sign-out-alt"/>
+      </div>
     </div>
     <div class="-mx-8 px-8 border-b-2 border-green-200">
-      <UserStripe />
+      <UserStripe :user="loginUser"/>
     </div>
-    <template v-for="prop in 10" :key="prop">
+    <template v-for="user in onlineUsers" :key="user.uid">
       <div>
-        <UserStripe />
+        <UserStripe :user="user" v-if=" new Date().getTime() < user.expire" />
       </div>
     </template>
   </div>
@@ -19,10 +21,25 @@
 
 <script>
 import UserStripe from '@/components/UI/UserStripe.vue';
+import { useStore } from 'vuex';
+import { computed } from 'vue';
 
 export default {
   components: {
     UserStripe,
+  },
+  setup() {
+    const { dispatch, getters } = useStore();
+    const loginUser = computed(() => getters['auth/loginUser']);
+    const onlineUsers = computed(() => getters.onlineUsers);
+    const signOut = () => {
+      dispatch('auth/logOut');
+    };
+    return {
+      signOut,
+      loginUser,
+      onlineUsers,
+    };
   },
 };
 </script>

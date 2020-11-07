@@ -1,6 +1,6 @@
 <template>
     <form
-      class="mt-4 py-4 px-16 w-100 h-75 flex flex-col items-center border-4 border-white rounded-xl font-semibold text-white shadow-2xl"
+      class="mt-4 py-4 px-16 min-w-100 min-h-75 flex flex-col items-center border-4 border-white rounded-xl font-semibold text-white shadow-2xl"
       @submit.prevent="signIn"
     >
         <h1 class="-mx-16 mb-2 text-3xl font-bold text-center">
@@ -58,7 +58,9 @@ export default {
       };
       dispatch('auth/logIn', data)
         .then(() => router.push('/room'))
-        .catch((err) => alert(err.message));
+        .catch((err) => {
+          alert(err);
+        });
     };
     return {
       signIn,

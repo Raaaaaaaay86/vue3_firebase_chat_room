@@ -26,7 +26,10 @@ export default {
   setup() {
     const { dispatch } = useStore();
 
-    onMounted(() => dispatch('realTimeMessage'));
+    onMounted(() => {
+      dispatch('realTimeMessages');
+      dispatch('realTimeOnlineUsers');
+    });
   },
 };
 </script>
