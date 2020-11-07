@@ -13,7 +13,10 @@
     </div>
     <template v-for="user in onlineUsers" :key="user.uid">
       <div>
-        <UserStripe :user="user" v-if=" new Date().getTime() < user.expire" />
+        <UserStripe
+          :user="user"
+          v-if=" new Date().getTime() < user.expire"
+        />
       </div>
     </template>
   </div>
@@ -22,6 +25,7 @@
 <script>
 import UserStripe from '@/components/UI/UserStripe.vue';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 import { computed } from 'vue';
 
 export default {
@@ -29,11 +33,17 @@ export default {
     UserStripe,
   },
   setup() {
-    const { dispatch, getters } = useStore();
+    const router = useRouter();
+    const { dispatch, getters, commit } = useStore();
     const loginUser = computed(() => getters['auth/loginUser']);
     const onlineUsers = computed(() => getters.onlineUsers);
+
     const signOut = () => {
-      dispatch('auth/logOut');
+      dispatch('auth/logOut')
+        .then(() => {
+          commit('CLEAN_ONLINE_USER');
+          router.push('/');
+        });
     };
     return {
       signOut,

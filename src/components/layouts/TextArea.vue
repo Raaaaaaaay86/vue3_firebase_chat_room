@@ -13,16 +13,16 @@
     </form>
     <div class="flex-grow flex justify-evenly">
       <div
-        class="w-16 h-16 border-2 border-green-200 flex justify-center items-center rounded-full hover:bg-green-800 shadow-2xl hover:shadow-md"
+        class="w-16 h-16 border-2 border-green-200 flex justify-center items-center rounded-full hover:bg-green-800 shadow-2xl hover:shadow-md cursor-pointer"
         @click="sendMessage"
       >
-        <i class="fas fa-1x fa-paper-plane mr-1"></i>
+        <i class="fas fa-2x fa-paper-plane mr-1"></i>
       </div>
       <div
-        class="w-16 h-16 border-2 border-green-200 flex justify-center items-center rounded-full hover:bg-green-800 shadow-2xl hover:shadow-md"
+        class="w-16 h-16 border-2 border-green-200 flex justify-center items-center rounded-full hover:bg-green-800 shadow-2xl hover:shadow-md cursor-pointer"
         @click.prevent="$refs.fileInput.click()"
       >
-        <i class="fas fa-1x fa-file-upload" />
+        <i class="fas fa-2x fa-file-upload" />
       </div>
     </div>
   </div>

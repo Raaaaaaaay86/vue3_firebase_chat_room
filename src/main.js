@@ -19,7 +19,7 @@ app.config.globalProperties.$filters = {
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {
-    if (store.getters['auth/loginUser']) {
+    if (store.getters['auth/loginUser'].uid) {
       next();
     } else {
       next('/');
