@@ -1,6 +1,6 @@
 <template>
     <form
-    class="mt-4 py-4 px-16 min-w-100 min-h-75 flex flex-col items-center border-4 border-white rounded-xl font-semibold text-white shadow-2xl"
+    class="mt-4 py-4 px-8 sm:px-16 w-11/12 sm:w-100 flex flex-col items-center border-4 border-white rounded-xl font-semibold text-white shadow-2xl"
     @submit.prevent="signUp"
     >
         <h1 class="-mx-16 mb-2 text-3xl font-bold text-center">
@@ -27,15 +27,15 @@
         <div class="w-full flex justify-evenly">
           <v-button
             class="mt-4 rounded shadow"
-            @click.prevent="toSignIn"
-          >
-            BACK
-          </v-button>
-          <v-button
-            class="mt-4 rounded shadow"
             @click.prevent="signUp"
           >
             SIGN UP
+          </v-button>
+          <v-button
+            class="mt-4 rounded shadow"
+            @click.prevent="toSignIn"
+          >
+            BACK
           </v-button>
         </div>
     </form>
@@ -62,11 +62,11 @@ export default {
         email: email.value,
         password: password.value,
       };
-      console.log('eee');
       dispatch('auth/signUp', data)
         .then(() => toSignIn())
         .catch((err) => alert(err.message));
     };
+
     return {
       toSignIn,
       signUp,

@@ -1,10 +1,10 @@
 <template>
     <form
-      class="mt-4 py-4 px-16 min-w-100 min-h-75 flex flex-col items-center border-4 border-white rounded-xl font-semibold text-white shadow-2xl"
+      class="mt-4 py-4 px-8 sm:px-16 w-11/12 sm:w-100 flex flex-col items-center border-4 border-white rounded-xl font-semibold text-white shadow-2xl"
       @submit.prevent="signIn"
     >
         <h1 class="-mx-16 mb-2 text-3xl font-bold text-center">
-          PLEASE SIGN IN<br>To The Chat Room
+          Please Sign In<br>To The Chat Room
         </h1>
         <div class="w-full">
           <label for="email" class="block">
@@ -21,15 +21,15 @@
         <div class="w-full flex justify-evenly">
           <v-button
             class="mt-4 rounded shadow"
-            @click.prevent="changeToSignUp"
-          >
-            Create User
-          </v-button>
-          <v-button
-            class="mt-4 rounded shadow"
             @click.prevent="signIn"
           >
             SIGN IN
+          </v-button>
+          <v-button
+            class="mt-4 rounded shadow"
+            @click.prevent="changeToSignUp"
+          >
+            Create User
           </v-button>
         </div>
     </form>
@@ -42,7 +42,7 @@ import { ref } from 'vue';
 
 export default {
   setup(props, { emit }) {
-    const { dispatch } = useStore();
+    const { dispatch, commit } = useStore();
     const router = useRouter();
     const email = ref('');
     const password = ref('');
@@ -58,8 +58,13 @@ export default {
       };
       dispatch('auth/logIn', data)
         .then(() => router.push('/room'))
-        .catch((err) => {
-          alert(err);
+        .catch(() => {
+          const modal = {
+            type: 'alert',
+            message: 'Sign in failed',
+            topic: 'ALERT',
+          };
+          commit('modal/ALERT_MODAL', modal);
         });
     };
     return {

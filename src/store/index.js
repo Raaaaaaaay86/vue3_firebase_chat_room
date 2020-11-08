@@ -89,7 +89,7 @@ const actions = {
     });
   },
   async updateProfile(context, { name, profileFile, uid, registeredRef }) {
-    if (profileFile) {
+    if (typeof profileFile !== 'string') {
       const profileRef = storage.ref(`registerd/${uid}`);
 
       await profileRef.put(profileFile);
@@ -104,7 +104,6 @@ const actions = {
       firestore.doc(registeredRef)
         .update({ nickName: name });
     }
-    console.log(context);
     return Promise.resolve(true);
   },
 };
