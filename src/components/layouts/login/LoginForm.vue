@@ -4,7 +4,7 @@
       @submit.prevent="signIn"
     >
         <h1 class="-mx-16 mb-2 text-3xl font-bold text-center">
-          PlEASE SIGN IN<br>To The Chat Room
+          PLEASE SIGN IN<br>To The Chat Room
         </h1>
         <div class="w-full">
           <label for="email" class="block">

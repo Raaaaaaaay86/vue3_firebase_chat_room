@@ -2,10 +2,12 @@
 /* eslint-disable no-shadow */
 import { createStore } from 'vuex';
 import { firestore, storage } from '@/firebase/firebaseSDK';
-import Auth from '@/store/auth';
+import auth from '@/store/auth';
+import modal from '@/store/modal';
 
 const modules = {
-  auth: Auth,
+  auth,
+  modal,
 };
 
 const state = {
@@ -74,6 +76,9 @@ const actions = {
 
     onlineUserRef.onSnapshot((snapshot) => {
       snapshot.docChanges().forEach((change) => {
+        if (change.type === 'modified') {
+          commit('UPDATE_ONLINE_USER', change.doc.data());
+        }
         if (change.type === 'added') {
           commit('ADD_NEW_ONLINE_USER', change.doc.data());
         }
@@ -82,6 +87,25 @@ const actions = {
         }
       });
     });
+  },
+  async updateProfile(context, { name, profileFile, uid, registeredRef }) {
+    if (profileFile) {
+      const profileRef = storage.ref(`registerd/${uid}`);
+
+      await profileRef.put(profileFile);
+      const newProfileURL = await profileRef.getDownloadURL();
+
+      firestore.doc(registeredRef)
+        .update({
+          nickName: name,
+          profileURL: newProfileURL,
+        });
+    } else {
+      firestore.doc(registeredRef)
+        .update({ nickName: name });
+    }
+    console.log(context);
+    return Promise.resolve(true);
   },
 };
 
@@ -94,6 +118,10 @@ const mutations = {
   },
   ADD_NEW_ONLINE_USER(state, user) {
     state.onlineUsers.push(user);
+  },
+  UPDATE_ONLINE_USER(state, user) {
+    const index = state.onlineUsers.findIndex((el) => el.uid === user.uid);
+    state.onlineUsers[index] = user;
   },
   DELETE_ONLINE_USER(state, user) {
     const index = state.onlineUsers.findIndex((el) => el.uid === user.uid);

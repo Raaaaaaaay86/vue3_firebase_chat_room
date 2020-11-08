@@ -4,6 +4,12 @@
       <h1 class="text-2xl font-semibold">
         The Vue Chat
       </h1>
+      <p
+        class="ml-auto cursor-pointer"
+        @click.prevent="openProfileModal"
+      >
+        Edit Profile
+      </p>
     </div>
     <div class="pt-16 h-screen grid grid-cols-12 text-white">
       <UserList />
@@ -24,12 +30,21 @@ export default {
     ChatArea,
   },
   setup() {
-    const { dispatch } = useStore();
-
+    const { dispatch, commit } = useStore();
+    const openProfileModal = () => {
+      const modalType = {
+        type: 'editProfile',
+        modalTopic: 'Edit Profile',
+      };
+      commit('modal/PROFILE_MODAL', modalType);
+    };
     onMounted(() => {
       dispatch('realTimeMessages');
       dispatch('realTimeOnlineUsers');
     });
+    return {
+      openProfileModal,
+    };
   },
 };
 </script>

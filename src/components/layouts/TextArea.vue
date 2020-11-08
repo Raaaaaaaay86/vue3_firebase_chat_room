@@ -34,7 +34,7 @@ import { ref, computed } from 'vue';
 
 export default {
   setup() {
-    const { dispatch, getters } = useStore();
+    const { dispatch, getters, commit } = useStore();
     const text = ref('');
     const loginUser = computed(() => getters['auth/loginUser']);
 
@@ -52,7 +52,14 @@ export default {
 
     const uploadFile = (e) => {
       dispatch('sendFile', { e, loginUser: loginUser.value })
-        .catch((err) => alert(err));
+        .catch(() => {
+          const modal = {
+            type: 'alert',
+            message: 'Only Accpet File Type: "Image"',
+            topic: 'ALERT',
+          };
+          commit('modal/ALERT_MODAL', modal);
+        });
     };
 
     return {

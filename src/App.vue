@@ -1,12 +1,28 @@
 <template>
 <div>
+  <Modal v-if="showModal" :modal-name="modalName" />
   <router-view />
 </div>
 </template>
 
 <script>
+import Modal from '@/components/layouts/Modal.vue';
+import { computed } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
+  components: {
+    Modal,
+  },
+  setup() {
+    const { getters } = useStore();
+    const showModal = computed(() => getters['modal/showModal']);
+    const modalName = computed(() => getters['modal/modalName']);
+    return {
+      showModal,
+      modalName,
+    };
+  },
 };
 </script>
 

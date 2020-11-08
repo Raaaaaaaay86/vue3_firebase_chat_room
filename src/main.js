@@ -17,14 +17,14 @@ app.config.globalProperties.$filters = {
   timestamp: TimestampFilter,
 };
 
-router.beforeEach((to, from, next) => {
-  if (to.meta.requireAuth) {
-    if (store.getters['auth/loginUser'].uid) {
-      next();
-    } else {
-      next('/');
-    }
-  } else {
-    next();
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   if (to.meta.requireAuth) {
+//     if (store.getters['auth/loginUser'].uid) {
+//       next();
+//     } else {
+//       next('/');
+//     }
+//   } else {
+//     next();
+//   }
+// });

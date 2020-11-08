@@ -56,6 +56,14 @@ const actions = {
   setUserInfo({ commit }, user) {
     commit('SET_USER_INFO', user);
   },
+  async refreshLoginUser({ commit, state }) {
+    const querySnapshot = await firestore.collection('registered')
+      .where('uid', '==', state.loginUser.uid).get();
+    console.log(querySnapshot);
+    querySnapshot.forEach((doc) => {
+      commit('SET_USER_INFO', doc.data());
+    });
+  },
 };
 
 const mutations = {
@@ -65,11 +73,14 @@ const mutations = {
   LOG_OUT(state) {
     state.loginUser.uid = null;
   },
+  UPDATE_SELF(state, updateData) {
+    console.log(updateData);
+  },
 };
 
 const getters = {
   loginUser(state) {
-    return state.loginUser;
+    return { ...state.loginUser };
   },
 };
 
