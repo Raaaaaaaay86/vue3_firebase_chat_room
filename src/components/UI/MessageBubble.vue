@@ -9,14 +9,14 @@
       </p>
       <div
         style="max-width: 60%"
-        class="whitespace-pre-wrap break-words px-4 py-2 rounded-2xl inline text-green-900 bg-white"
+        class="whitespace-pre-wrap break-words px-4 py-2 rounded-2xl inline text-green-900 bg-white shadow-md"
         :class=" message.uid === loginUser.uid ? 'ml-auto' : 'mr-auto'"
       >
         <p v-if="message.type === 'msg'">
           {{ message.message }}
         </p>
         <div
-          class="w-48 h-40 bg-cover bg-center bg-no-repeat rounded"
+          class="w-32 h-24 sm:w-48 sm:h-40 bg-cover bg-center bg-no-repeat rounded"
           :style="{'backgroundImage': 'url(' + message.fileURL + ')'}"
           v-else
         />
